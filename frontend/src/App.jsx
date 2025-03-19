@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import './App.css';
 
+const API_URL = import.meta.env.VITE_API_URL; // Use Vite env variable
+
 function App() {
   const [todos, setTodos] = useState([]);
   const [newTodo, setNewTodo] = useState('');
@@ -12,7 +14,7 @@ function App() {
 
   const fetchTodos = async () => {
     try {
-      const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/todos`);
+      const response = await axios.get(`${API_URL}/api/todos`);
       setTodos(response.data);
     } catch (error) {
       console.error('Error fetching todos:', error);
@@ -24,7 +26,7 @@ function App() {
     if (!newTodo.trim()) return;
 
     try {
-      await axios.post(`${process.env.REACT_APP_API_URL}/api/todos`, { text: newTodo });
+      await axios.post(`${API_URL}/api/todos`, { text: newTodo });
       setNewTodo('');
       fetchTodos();
     } catch (error) {
@@ -34,7 +36,7 @@ function App() {
 
   const toggleTodo = async (id) => {
     try {
-      await axios.patch(`${process.env.REACT_APP_API_URL}/api/todos/${id}`);
+      await axios.patch(`${API_URL}/api/todos/${id}`);
       fetchTodos();
     } catch (error) {
       console.error('Error toggling todo:', error);
@@ -43,7 +45,7 @@ function App() {
 
   const deleteTodo = async (id) => {
     try {
-      await axios.delete(`${process.env.REACT_APP_API_URL}/api/todos/${id}`);
+      await axios.delete(`${API_URL}/api/todos/${id}`);
       fetchTodos();
     } catch (error) {
       console.error('Error deleting todo:', error);
@@ -66,7 +68,7 @@ function App() {
         {todos.map((todo) => (
           <li key={todo._id}>
             <span
-              style={{ textDecoration: todo.completed ? 'line-through' : 'none' }}
+              style={{ textDecoration: todo.completed ? 'line-through' : 'none', cursor: 'pointer' }}
               onClick={() => toggleTodo(todo._id)}
             >
               {todo.text}
