@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import './App.css';
 
-const API_URL = import.meta.env.VITE_API_URL; // Use Vite env variable
 
 function App() {
   const [todos, setTodos] = useState([]);
@@ -14,7 +13,7 @@ function App() {
 
   const fetchTodos = async () => {
     try {
-      const response = await axios.get(`${API_URL}/api/todos`);
+      const response = await axios.get(`/api/todos`);
       setTodos(response.data);
     } catch (error) {
       console.error('Error fetching todos:', error);
@@ -26,7 +25,7 @@ function App() {
     if (!newTodo.trim()) return;
 
     try {
-      await axios.post(`${API_URL}/api/todos`, { text: newTodo });
+      await axios.post(`/api/todos`, { text: newTodo });
       setNewTodo('');
       fetchTodos();
     } catch (error) {
@@ -36,7 +35,7 @@ function App() {
 
   const toggleTodo = async (id) => {
     try {
-      await axios.patch(`${API_URL}/api/todos/${id}`);
+      await axios.patch(`/api/todos/${id}`);
       fetchTodos();
     } catch (error) {
       console.error('Error toggling todo:', error);
@@ -45,7 +44,7 @@ function App() {
 
   const deleteTodo = async (id) => {
     try {
-      await axios.delete(`${API_URL}/api/todos/${id}`);
+      await axios.delete(`/api/todos/${id}`);
       fetchTodos();
     } catch (error) {
       console.error('Error deleting todo:', error);
